@@ -8,7 +8,6 @@ import { IArticleResponse } from './types/article-response.interface';
 import slugify from 'slugify';
 import { IArticlesResponse } from './types/articles-response.interface';
 import { FollowEntity } from '@app/profile/follow.entity';
-import { CommentEntity } from './comments.entity';
 
 @Injectable()
 export class ArticleService {
@@ -19,8 +18,6 @@ export class ArticleService {
     private readonly userRepository: Repository<UserEntity>,
     @InjectRepository(FollowEntity)
     private readonly followRepository: Repository<FollowEntity>,
-    @InjectRepository(CommentEntity)
-    private readonly commentRepository: Repository<CommentEntity>,
     private dataSource: DataSource,
   ) {}
 
@@ -243,11 +240,5 @@ export class ArticleService {
     }
 
     return article;
-  }
-
-  async getComments(slug: string): Promise<CommentEntity> {
-    const article = await this.findBySlug(slug);
-
-    return '' as any;
   }
 }

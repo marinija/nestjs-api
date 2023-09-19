@@ -113,14 +113,4 @@ export class ArticleController {
     );
     return this.articleService.buildArticleResponse(article);
   }
-
-  @Get(':slug/comments')
-  @UseGuards(AuthGuard)
-  async getComments(
-    @User('id') currentUserId: number,
-    @Param('slug') slug: string,
-  ): Promise<IArticleResponse> {
-    const article = await this.articleService.getComments(slug);
-    return '' as any;
-  }
 }

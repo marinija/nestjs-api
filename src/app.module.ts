@@ -14,6 +14,7 @@ import { AuthMiddleware } from '@app/user/middlewares/auth.middleware';
 import { AuthGuard } from '@app/user/guards/auth.guard';
 import { ArticleModule } from '@app/article/article.module';
 import { ProfileModule } from '@app/profile/profile.module';
+import { CommentsModule } from './comments/comments.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { ProfileModule } from '@app/profile/profile.module';
     UserModule,
     ArticleModule,
     ProfileModule,
+    CommentsModule,
   ],
   controllers: [AppController],
   providers: [AppService, AuthGuard],
