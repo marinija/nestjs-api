@@ -16,11 +16,20 @@ export class CommentsService {
     private articleService: ArticleService,
   ) {}
 
-  async getComments(slug: string): Promise<CommentsEntity[]> {
-    return await this.commentsRepository.find({
-      where: { article: { slug } },
-      relations: ['article'],
+  async getComments(slug: string): Promise<any[]> {
+    const article = await this.articleService.findBySlug(slug);
+
+    if (!article) {
+      throw new HttpException('Article not found', HttpStatus.NOT_FOUND);
+    }
+
+    const comments = await this.commentsRepository.find({
+      where: { articleId: article.id },
     });
+
+    const data = comments.map((x) => ({ ...x, author: article.author }));
+
+    return data;
   }
 
   async addComment(
@@ -36,7 +45,8 @@ export class CommentsService {
     const comment = new CommentsEntity();
 
     Object.assign(comment, createCommentDto, {
-      author: article.author,
+      userId: article.author.id,
+      articleId: article.id,
     });
 
     return await this.commentsRepository.save(comment);
@@ -44,5 +54,15 @@ export class CommentsService {
 
   buildCommentResponse(comments: CommentsEntity) {
     return { comments };
+  }
+
+  async deleteComment(slug: string, commentId: number) {
+    const article = await this.articleService.findBySlug(slug);
+
+    if (!article) {
+      throw new HttpException('Article does not exist ', HttpStatus.NOT_FOUND);
+    }
+
+    return await this.commentsRepository.delete({ id: commentId });
   }
 }

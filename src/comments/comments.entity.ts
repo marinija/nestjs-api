@@ -1,11 +1,4 @@
-import { ArticleEntity } from '@app/article/article.entity';
-import {
-  BeforeUpdate,
-  Column,
-  Entity,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { BeforeUpdate, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'comments' })
 export class CommentsEntity {
@@ -26,9 +19,9 @@ export class CommentsEntity {
   @Column({ default: '' })
   body: string;
 
-  @ManyToOne(() => ArticleEntity, (article) => article.author)
-  author: ArticleEntity;
+  @Column()
+  userId: number;
 
-  @ManyToOne(() => ArticleEntity, (article) => article.comments)
-  article: ArticleEntity;
+  @Column()
+  articleId: number;
 }

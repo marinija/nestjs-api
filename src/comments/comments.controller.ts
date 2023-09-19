@@ -1,4 +1,12 @@
-import { Controller, Get, Param, Body, UseGuards, Post } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  Body,
+  UseGuards,
+  Post,
+  Delete,
+} from '@nestjs/common';
 import { CommentsService } from './comments.service';
 import { CreateCommentsDto } from './dto/create-comments.dto';
 import { AuthGuard } from '@app/user/guards/auth.guard';
@@ -13,6 +21,7 @@ export class CommentsController {
     @Param('slug') slug: string,
   ): Promise<{ comments: CommentsEntity[] }> {
     const comments = await this.commentsService.getComments(slug);
+    console.log(comments);
     return { comments };
   }
 
@@ -27,5 +36,13 @@ export class CommentsController {
       createCommentDto,
     );
     return this.commentsService.buildCommentResponse(comment);
+  }
+
+  @Delete(':slug/comments/:id')
+  async deleteComment(
+    @Param('slug') slug: string,
+    @Param('id') commentId: number,
+  ) {
+    return await this.commentsService.deleteComment(slug, commentId);
   }
 }
