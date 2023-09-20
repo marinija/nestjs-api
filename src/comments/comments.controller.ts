@@ -21,7 +21,6 @@ export class CommentsController {
     @Param('slug') slug: string,
   ): Promise<{ comments: CommentsEntity[] }> {
     const comments = await this.commentsService.getComments(slug);
-    console.log(comments);
     return { comments };
   }
 
@@ -35,7 +34,7 @@ export class CommentsController {
       slug,
       createCommentDto,
     );
-    return this.commentsService.buildCommentResponse(comment);
+    return { comment };
   }
 
   @Delete(':slug/comments/:id')

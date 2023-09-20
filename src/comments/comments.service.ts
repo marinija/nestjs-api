@@ -47,6 +47,7 @@ export class CommentsService {
     Object.assign(comment, createCommentDto, {
       userId: article.author.id,
       articleId: article.id,
+      author: article.author,
     });
 
     return await this.commentsRepository.save(comment);
